@@ -1,21 +1,21 @@
 <h1>Iniciar Sesión</h1>
-<form>
+<form >
   <div class="form-group mb-3">
-    <label for="userType">Tipo de Usuario:</label>
-    <select class="form-control" id="userType" name="userType" required>
+    <label for="user_type">Tipo de Usuario:</label>
+    <select class="form-control" id="user_type" name="user_type" required>
       <option value="" disabled selected>Seleccione su tipo de usuario</option>
-      <option value="student">Estudiante</option>
-      <option value="specialist">Especialista</option>
-      <option value="admin">Administrador</option>
+      <option value="estudiante">Estudiante</option>
+      <option value="especialista">Especialista</option>
+      <option value="administrador">Administrador</option>
     </select>
   </div>
   <div class="form-group mb-3">
     <label for="email">Email:</label>
-    <input type="email" class="form-control" id="email" name="email" required>
+    <input type="email" class="form-control" id="email" placeholder="Consigne su email" name="email" required>
   </div>
   <div class="form-group mb-3">
-    <label for="password">Contraseña:</label>
-    <input type="password" class="form-control" id="password" name="password" required>
+    <label for="contrasenia">Contraseña:</label>
+    <input type="password" class="form-control" id="contrasenia" placeholder="Consigne su contraseña" name="contrasenia" required>
   </div>
   <button type="submit" class="btn btn-primary">Entrar</button>
 </form>
