@@ -8,12 +8,13 @@ import { catchError } from 'rxjs/operators';
 })
 export class AuthService {
 
-  private baseUrl = 'http://127.0.0.1:5000/cus_routes/login'; // Cambia esto por la URL de tu servidor Flask
+  private baseUrl = 'http://127.0.0.1:5000/cus_routes1/login'; // Cambia esto por la URL de tu servidor Flask
 
   constructor(private http: HttpClient) { }
 
   login(userType: string, email: string, password: string): Observable<any> {
-    const body = { email, contrasenia: password };
+    console.log(email, password)
+    const body = { userType, email, contrasenia: password };
 
     return this.http.post<any>(this.baseUrl, body).pipe(
       catchError(error => {

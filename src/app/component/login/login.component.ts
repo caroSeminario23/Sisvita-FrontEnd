@@ -1,41 +1,51 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2'; // Importa SweetAlert2
+import Swal from 'sweetalert2';
+import { ReactiveFormsModule ,FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  user_type: string ='';
-  email: string ='';
-  contrasenia: string ='';
-  errorMessage: string ='';
+  loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    this.loginForm = new FormGroup({
+      user_type: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      contrasenia: new FormControl('', [Validators.required, Validators.minLength(6)])
+    });
+  }
 
-  onSubmit() {
-    if (this.user_type && this.email && this.contrasenia) {
-      this.authService.login(this.user_type, this.email, this.contrasenia).subscribe(
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      const { user_type, email, contrasenia } = this.loginForm.value;
+      this.authService.login(user_type, email, contrasenia).subscribe(
         response => {
           if (response.success) {
             this.redirectUser(response.user_type);
-            Swal.fire('¡Éxito!', 'Inicio de sesión exitoso', 'success'); // Muestra SweetAlert2 de éxito
+            Swal.fire('¡Éxito!', 'Inicio de sesión exitoso', 'success');
           } else {
-            this.errorMessage = response.message;
-            Swal.fire('¡Error!', this.errorMessage, 'error'); // Muestra SweetAlert2 de error
+            Swal.fire('¡Error!', response.message, 'error');
           }
         },
         error => {
-          this.errorMessage = 'Error de servidor. Por favor, intente de nuevo más tarde.';
-          Swal.fire('¡Error!', this.errorMessage, 'error'); // Muestra SweetAlert2 de error
+          Swal.fire('¡Error!', 'Error de servidor. Por favor, intente de nuevo más tarde.', 'error');
         }
       );
     } else {
-      this.errorMessage = 'Por favor, complete todos los campos.';
-      Swal.fire('¡Advertencia!', this.errorMessage, 'warning'); // Muestra SweetAlert2 de advertencia
+      Swal.fire({
+        title: '¡Advertencia!',
+        text: 'Por favor, complete todos los campos correctamente.',
+        icon: 'warning',
+        timer: 1000,
+        showConfirmButton: false
+      });
     }
   }
 
